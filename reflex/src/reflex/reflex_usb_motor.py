@@ -94,6 +94,7 @@ class ReflexUSBMotor(Motor):
         '''
         Sets speed and commands finger in or out based on sign of velocity
         '''
+        print(self.name)
         self.set_motor_speed(goal_vel)
         if goal_vel > 0.0:
             max_command = self._MAX_MOTOR_TRAVEL * self.MOTOR_TO_JOINT_GEAR_RATIO

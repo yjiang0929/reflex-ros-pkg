@@ -37,7 +37,8 @@ from reflex_hand import ReflexHand
 from reflex_usb_motor import ReflexUSBMotor
 import reflex_one_msgs.msg
 
-motor_names = ['_f1', '_f2', '_f3', '_preshape1', '_preshape2']
+motor_names = ['_f1', '_f2', '_preshape1']
+# motor_names = ['_f1', '_f2', '_f3', '_preshape1', '_preshape2']
 
 class ReflexOneHand(ReflexHand):
     def __init__(self):
@@ -64,30 +65,30 @@ class ReflexOneHand(ReflexHand):
     def set_angles(self, pose):
         self.motors[self.namespace + '_f1'].set_motor_angle(pose.f1)
         self.motors[self.namespace + '_f2'].set_motor_angle(pose.f2)
-        self.motors[self.namespace + '_f3'].set_motor_angle(pose.f3)
+        # self.motors[self.namespace + '_f3'].set_motor_angle(pose.f3)
         self.motors[self.namespace + '_preshape1'].set_motor_angle(pose.preshape1)
-        self.motors[self.namespace + '_preshape2'].set_motor_angle(pose.preshape2)
+        # self.motors[self.namespace + '_preshape2'].set_motor_angle(pose.preshape2)
 
     def set_velocities(self, velocity):
         self.motors[self.namespace + '_f1'].set_motor_velocity(velocity.f1)
         self.motors[self.namespace + '_f2'].set_motor_velocity(velocity.f2)
-        self.motors[self.namespace + '_f3'].set_motor_velocity(velocity.f3)
+        # self.motors[self.namespace + '_f3'].set_motor_velocity(velocity.f3)
         self.motors[self.namespace + '_preshape1'].set_motor_velocity(velocity.preshape1)
-        self.motors[self.namespace + '_preshape2'].set_motor_velocity(velocity.preshape2)
+        # self.motors[self.namespace + '_preshape2'].set_motor_velocity(velocity.preshape2)
 
     def set_speeds(self, speed):
         self.motors[self.namespace + '_f1'].set_motor_speed(speed.f1)
         self.motors[self.namespace + '_f2'].set_motor_speed(speed.f2)
-        self.motors[self.namespace + '_f3'].set_motor_speed(speed.f3)
+        # self.motors[self.namespace + '_f3'].set_motor_speed(speed.f3)
         self.motors[self.namespace + '_preshape1'].set_motor_speed(speed.preshape1)
-        self.motors[self.namespace + '_preshape2'].set_motor_speed(speed.preshape2)
+        # self.motors[self.namespace + '_preshape2'].set_motor_speed(speed.preshape2)
 
     def set_force_cmds(self, torque):
         self.motors[self.namespace + '_f1'].set_force_cmd(torque.f1)
         self.motors[self.namespace + '_f2'].set_force_cmd(torque.f2)
-        self.motors[self.namespace + '_f3'].set_force_cmd(torque.f3)
+        # self.motors[self.namespace + '_f3'].set_force_cmd(torque.f3)
         self.motors[self.namespace + '_preshape1'].set_force_cmd(torque.preshape1)
-        self.motors[self.namespace + '_preshape2'].set_force_cmd(torque.preshape2)
+        # self.motors[self.namespace + '_preshape2'].set_force_cmd(torque.preshape2)
 
     def _receive_enc_state_cb(self, data):
         #Receives and processes the encoder state
@@ -115,6 +116,7 @@ class ReflexOneHand(ReflexHand):
 
     def _receive_vel_cmd_cb(self, data):
         self.disable_force_control()
+        print(data)
         self.set_velocities(data)
 
     def _receive_force_cmd_cb(self, data):
@@ -133,9 +135,9 @@ class ReflexOneHand(ReflexHand):
 
     def _publish_hand_state(self):
         state = reflex_one_msgs.msg.Hand()
-        # motor_names = ('_f1', '_f2', '_preshape1')
-        motor_names = ('_f1', '_f2', '_f3', '_preshape1', '_preshape2')
-        for i in range(5):
+        motor_names = ('_f1', '_f2', '_preshape1')
+        # motor_names = ('_f1', '_f2', '_f3', '_preshape1', '_preshape2')
+        for i in range(len(motor_names)):
             state.motor[i] = self.motors[self.namespace + motor_names[i]].get_motor_msg()
         for i in range(3):
             state.finger[i].proximal = self.proximal_angle[i]
@@ -204,9 +206,9 @@ motor, or 'q' to indicate that the zero point has been reached\n")
         data = dict(
             reflex_one_f1=dict(zero_point=self.motors[self.namespace + '_f1'].get_current_raw_motor_angle()),
             reflex_one_f2=dict(zero_point=self.motors[self.namespace + '_f2'].get_current_raw_motor_angle()),
-            reflex_one_f3=dict(zero_point=self.motors[self.namespace + '_f3'].get_current_raw_motor_angle()),
+            # reflex_one_f3=dict(zero_point=self.motors[self.namespace + '_f3'].get_current_raw_motor_angle()),
             reflex_one_preshape1=dict(zero_point=self.motors[self.namespace + '_preshape1'].get_current_raw_motor_angle()),
-            reflex_one_preshape2=dict(zero_point=self.motors[self.namespace + '_preshape2'].get_current_raw_motor_angle())
+            # reflex_one_preshape2=dict(zero_point=self.motors[self.namespace + '_preshape2'].get_current_raw_motor_angle())
         )
         self._write_zero_point_data_to_file(self.usb_hand_type + '_motor_zero_points.yaml', data)
 

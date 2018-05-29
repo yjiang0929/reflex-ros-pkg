@@ -43,9 +43,9 @@ class ReflexHand(object):
         # can accommate future models with different motor types with extra conditions
             self.motors = {self.namespace + '_f1': MotorClass(self.namespace + '_f1'),
                            self.namespace + '_f2': MotorClass(self.namespace + '_f2'),
-                           self.namespace + '_f3': MotorClass(self.namespace + '_f3'),
-                           self.namespace + '_preshape1': MotorClass(self.namespace + '_preshape1'),
-                           self.namespace + '_preshape2': MotorClass(self.namespace + '_preshape2')}
+                           # self.namespace + '_f3': MotorClass(self.namespace + '_f3'),
+                           self.namespace + '_preshape1': MotorClass(self.namespace + '_preshape1')}
+                           # self.namespace + '_preshape2': MotorClass(self.namespace + '_preshape2')}
             rospy.Subscriber(self.namespace + '/command',
                          reflex_one_msgs.msg.Command, self._receive_cmd_cb)
             rospy.Subscriber(self.namespace + '/command_position',
