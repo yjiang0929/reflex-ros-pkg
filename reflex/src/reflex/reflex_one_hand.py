@@ -116,7 +116,6 @@ class ReflexOneHand(ReflexHand):
 
     def _receive_vel_cmd_cb(self, data):
         self.disable_force_control()
-        print(data)
         self.set_velocities(data)
 
     def _receive_force_cmd_cb(self, data):
